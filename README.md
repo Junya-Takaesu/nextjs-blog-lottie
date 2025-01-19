@@ -87,13 +87,11 @@ docker compose exec nextjs npx prisma db seed
 
 ## 🔜 Roadmap
 
-See our detailed roadmap and progress in [TODO.md](./README/todo.md)
+See our detailed roadmap and progress in [TODO.md](./README/TODO.md)
 
 ## 🧪 Development
 
 ### Running Tests
-
-TO DO
 
 ```bash
 docker compose exec nextjs npm test
