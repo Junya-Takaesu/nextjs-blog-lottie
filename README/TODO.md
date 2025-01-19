@@ -128,6 +128,7 @@
 
 ## 🔐 Security
 
+- [ ] Node version updates
 - [ ] Security headers
 - [ ] Rate limiting
 - [ ] CSRF protection
