@@ -1,36 +1,129 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Blog with Docker
 
-## Getting Started
+A modern blog application built with Next.js, PostgreSQL, and Prisma, running in Docker containers. This project serves as both a personal blog platform and a demonstration of modern web development practices.
 
-First, run the development server:
+## 🛠 Tech Stack
+
+### Backend
+
+- **Database**: PostgreSQL
+- **ORM**: Prisma
+- **Runtime**: Node.js
+- **Framework**: Next.js (App Router)
+- **Container**: Docker
+
+### Frontend
+
+- **Framework**: React (via Next.js)
+- **Styling**: Tailwind CSS
+- **Markdown**: [@uiw/react-md-editor](https://github.com/uiwjs/react-md-editor)
+
+### Development Tools
+
+- TypeScript
+- ESLint
+- Docker Compose
+- Prisma CLI
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Docker and Docker Compose
+- Node.js (for local development)
+
+### Setup and Installation
+
+1. Clone the repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone git@github.com:Junya-Takaesu/nextjs-blog-lottie.git
+cd nextjs-blog-lottie.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Start the Docker containers
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+docker compose up -d
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Set up the database
 
-## Learn More
+```bash
+# Generate Prisma Client
+docker compose exec nextjs npx prisma generate
 
-To learn more about Next.js, take a look at the following resources:
+# Run migrations
+docker compose exec nextjs npx prisma migrate dev
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Seed the database (optional)
+docker compose exec nextjs npx prisma db seed
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. Access the application
 
-## Deploy on Vercel
+- Blog: [http://localhost:3000](http://localhost:3000)
+- Prisma Studio: [http://localhost:5555](http://localhost:5555)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📝 Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+.
+├── app/                  # Next.js App Router pages and components
+├── prisma/              # Prisma schema and migrations
+├── public/              # Static files
+└── docker-compose.yml   # Docker Compose configuration
+```
+
+## ✨ Features
+
+- 📝 Markdown-based blog posts
+- 🏷 Tag support
+- 👤 User authentication
+- 🎨 Modern, responsive design
+- 🔍 SEO optimization
+- 🚀 Server-side rendering
+- 🛠 Admin dashboard
+
+## 🔜 Roadmap
+
+See our detailed roadmap and progress in [TODO.md](./README/todo.md)
+
+## 🧪 Development
+
+### Running Tests
+
+TO DO
+
+```bash
+docker compose exec nextjs npm test
+```
+
+### Database Management
+
+```bash
+# Access Prisma Studio
+docker compose exec nextjs npx prisma studio
+
+# Reset Database
+docker compose exec nextjs npx prisma migrate reset
+```
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👤 Author
+
+- GitHub: [@Junya-Takaesu](https://github.com/Junya-Takaesu)
+- Website: [example.com](https://example.com)
+
+## 🙏 Acknowledgments
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Prisma Documentation](https://www.prisma.io/docs)
+- [Tailwind CSS](https://tailwindcss.com/)
+
+---
+
+_This project is a personal blog platform created as a portfolio piece to demonstrate modern web development practices and technologies._
