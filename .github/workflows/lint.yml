@@ -2,10 +2,7 @@ name: Lint
 
 on:
   pull_request:
-    types:
-      - opened # PR作成時
-      - reopened # 閉じたPRを再オープン時
-      - synchronize # PR更新時（追加コミットや force push）:
+    types: [opened, reopened, synchronize]
     paths:
       - "**.ts"
       - "**.tsx"
@@ -29,42 +26,57 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
 
       - name: Run ESLint
-        id: eslint
-        run: npm run lint
-        continue-on-error: true
+        run: |
+          npx next lint --format json --output-file lint_output.json
+          echo "HAS_LINT_OUTPUT=true" >> $GITHUB_ENV
 
-      - name: Comment PR with Details
+      - name: Analyze Results
+        if: env.HAS_LINT_OUTPUT == 'true'
+        run: |
+          # 統計情報を集計
+          STATS=$(jq -r '
+            reduce .[] as $file (
+              {"error": 0, "warning": 0};
+              .error += $file.errorCount |
+              .warning += $file.warningCount
+            )
+          ' lint_output.json)
+
+          echo "TOTAL_ERRORS=$(echo $STATS | jq -r '.error')" >> $GITHUB_ENV
+          echo "TOTAL_WARNINGS=$(echo $STATS | jq -r '.warning')" >> $GITHUB_ENV
+
+      - name: Comment PR
+        if: env.HAS_LINT_OUTPUT == 'true'
         uses: actions/github-script@v6
         with:
           script: |
-            const output = `## Lint Check Summary
+            const errors = parseInt(process.env.TOTAL_ERRORS || '0');
+            const warnings = parseInt(process.env.TOTAL_WARNINGS || '0');
 
-            ### Status: ${process.env.LINT_STATUS === '0' ? '✅ Passed' : '❌ Failed'}
+            const status = errors === 0 ? '✅ Passed' : '❌ Failed';
 
-            ${process.env.LINT_OUTPUT ? `
-            <details>
-            <summary>詳細なレポート</summary>
+            const body = `## ESLint Check Results
 
-            \`\`\`
-            ${process.env.LINT_OUTPUT}
-            \`\`\`
-            </details>
-            ` : ''}
+            ### Status: ${status}
 
-            *最終実行: ${new Date().toLocaleString()}*
-            `;
+            📊 Summary:
+            - 🔴 Errors: ${errors}
+            - ⚠️ Warnings: ${warnings}
+            - 📝 Total Issues: ${errors + warnings}
 
-            github.rest.issues.createComment({
+            [View detailed log](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
+
+            *Executed at: ${new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}*`;
+
+            await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: output
-            })
-        env:
-          LINT_STATUS: ${{ steps.lint.exitCode }}
-          LINT_OUTPUT: ${{ steps.lint.outputs.stdout }}
+              body: body
+            });
