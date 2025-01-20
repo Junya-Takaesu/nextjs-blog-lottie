@@ -15,6 +15,10 @@ on:
       - "yarn.lock"
     branches: [main, develop]
 
+permissions:
+  pull-requests: write
+  contents: read
+
 jobs:
   lint:
     runs-on: ubuntu-latest
