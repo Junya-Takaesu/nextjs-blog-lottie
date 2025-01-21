@@ -71,13 +71,13 @@ jobs:
             # HTML構造を heredoc で構築
             if [ -n "$ERROR_LIST" ]; then
               ERROR_DETAILS="<details>
-              <summary>Show Detailed Errors</summary>
+            <summary>Show Detailed Errors</summary>
 
-              ### Detailed Errors:
+            ### Detailed Errors:
 
-              $ERROR_LIST
+            $ERROR_LIST
 
-              </details>"
+            </details>"
             else
               ERROR_DETAILS=""
             fi
