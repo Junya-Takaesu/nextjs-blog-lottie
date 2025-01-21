@@ -30,7 +30,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
       - name: Run ESLint
         id: eslint
         run: |
