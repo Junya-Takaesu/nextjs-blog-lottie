@@ -70,17 +70,14 @@ jobs:
 
             # HTML構造を heredoc で構築
             if [ -n "$ERROR_LIST" ]; then
-              ERROR_DETAILS=$(cat <<EOF
-              <details>
+              ERROR_DETAILS="<details>
               <summary>Show Detailed Errors</summary>
 
               ### Detailed Errors:
 
               $ERROR_LIST
 
-              </details>
-              EOF
-              )
+              </details>"
             else
               ERROR_DETAILS=""
             fi
