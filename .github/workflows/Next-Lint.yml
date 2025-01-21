@@ -10,6 +10,8 @@ on:
       - "**.jsx"
       - "package.json"
       - "yarn.lock"
+      - "**.yml" # Needed to debug the workflow itself
+      - "**.yaml" # Needed to debug the workflow itself
     branches: [main, develop]
 
 permissions:
@@ -68,17 +70,14 @@ jobs:
 
             # HTML構造を heredoc で構築
             if [ -n "$ERROR_LIST" ]; then
-              ERROR_DETAILS=$(cat <<EOF
-              <details>
-              <summary>Show Detailed Errors</summary>
+              ERROR_DETAILS="<details>
+            <summary>Show Detailed Errors</summary>
 
-              ### Detailed Errors:
+            ### Detailed Errors:
 
-              $ERROR_LIST
+            $ERROR_LIST
 
-              </details>
-              EOF
-              )
+            </details>"
             else
               ERROR_DETAILS=""
             fi
