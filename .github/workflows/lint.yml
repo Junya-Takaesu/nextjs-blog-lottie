@@ -101,3 +101,11 @@ jobs:
           gh pr comment ${{ github.event.pull_request.number }} --body "$BODY"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check ESLint Result
+        if: always()
+        run: |
+          if [ "$LINT_EXIT_CODE" != "0" ] || [ "$TOTAL_ERRORS" != "0" ]; then
+            echo "ESLint found errors. Failing the workflow."
+            exit 1
+          fi
