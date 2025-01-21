@@ -10,6 +10,8 @@ on:
       - "**.jsx"
       - "package.json"
       - "yarn.lock"
+      - "**.yml" # Needed to debug the workflow itself
+      - "**.yaml" # Needed to debug the workflow itself
     branches: [main, develop]
 
 permissions:
