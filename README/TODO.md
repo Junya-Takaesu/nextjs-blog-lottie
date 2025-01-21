@@ -119,6 +119,8 @@
 ## 🚀 Deployment
 
 - [ ] CI/CD pipeline
+  - [x] Run eslint
+  - [ ] Run tests
 - [ ] Production environment setup
 - [ ] Monitoring setup
 - [ ] Logging setup
