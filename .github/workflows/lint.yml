@@ -35,7 +35,14 @@ jobs:
         id: eslint
         continue-on-error: true
         run: |
+          # エラーがあってもスクリプトを続行
+          set +e
+
           npx next lint --format json --output-file lint_output.json
+          LINT_EXIT_CODE=$?
+
+          # エラー状態を環境変数として保存
+          # echo "LINT_EXIT_CODE=${LINT_EXIT_CODE}" >> $GITHUB_ENV
 
           if [ -s lint_output.json ]; then
             # 統計情報を集計
